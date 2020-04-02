@@ -2,7 +2,7 @@
 
 catIrt <- function( params, mod = c("brm", "grm"),
                     resp      = NULL,
-                    it_flags  = NULL,
+                    it        = NULL,
                     theta     = NULL,
                     catStart  = list( n.start = 5, init.theta = 0,
                                       select = c("UW-FI", "LW-FI", "PW-FI",
@@ -1020,8 +1020,11 @@ catIrt <- function( params, mod = c("brm", "grm"),
     class(cat_resp.i) <- mod
     
 # A vector indicating whether or not the examinee has taken an item:
-    if( is.null(it_flags) )
+    if( is.null(it) ) {
       it_flags    <- rep(0, nrow(params))
+    } else{
+      it_flags    <- it[i, ]
+    }
   
 # Running the loop at the beginning of the CAT for each person:
     x <- startCat( params = params, resp = resp.i, mod = mod,
