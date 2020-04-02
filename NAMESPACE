@@ -15,7 +15,7 @@ importFrom(utils,
            modifyList, setTxtProgressBar, txtProgressBar)
 
 # Main CAT Functions:
-export(catIrt, simIrt)
+export(catIrt, simIrt, sequentialCat)
 
 # Information/Item Selection Functions:
 export(FI, FI.brm, FI.grm)
