@@ -61,7 +61,7 @@ results2 <- do.call(catIrt, phase2.params)
 
 for(i in 1:N){
   # Check if phase1 items are not administered in phase2
-  if(TRUE %in% sapply(results$cat_indiv[[i]]$cat_it, function(v){return(v %in% results2$cat_indiv[[i]]$cat_it)})) {
+  if(length(intersect(results$cat_indiv[[i]]$cat_it, results2$cat_indiv[[i]]$cat_it)) > 0) {
     print("Not alright!")
   } else {
     #print("Great")
