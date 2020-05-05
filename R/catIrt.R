@@ -544,7 +544,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
 
  
 ## d) n.max ## (must be an integer greater than n.min AND n.it or "all")
-  if( { is.null(catTerm$n.max) |
+  if( { is.null(catTerm$n.max) | (length(catTerm$n.max) == 1) &
   	    !all(catTerm$n.max %in%  max(catTerm$n.min, catStart$n.it):nrow(params)) } ){
 
     if(catTerm$n.max == "all" | catTerm$n.max == "'all'" | catTerm$n.max == "\"all\"")
@@ -570,11 +570,27 @@ catIrt <- function( params, mod = c("brm", "grm"),
     } # END ifelse STATEMENTS
 
   } # END if STATEMENT
-  
+
+  if( length(catTerm$n.max) > 1 ){
+    # --> n.max is an odd length, warn the user.
+    if( length(catTerm$n.max) != dim(resp)[1] )
+      warning( "n.max are not specified for each simulee" )
+
+    # --> Turn n.max into a numeric variable.
+    catTerm$n.max <- suppressWarnings(as.numeric(catTerm$n.max))
+
+    for( i in 1:length(catTerm$n.max) ){
+      if( catTerm$n.max[i] == "all" | catTerm$n.max[i] == "'all'" | catTerm$n.max[i] == "\"all\"" )
+        catTerm$n.max[i] <- nrow(params)
+    }
+  }
+
 # And if n.max is less than the total number of params, one of the termination is implicitly fixed.
-  if( catTerm$n.max < nrow(params) )
-    catTerm$term <- c(catTerm$term, "fixed")
-    
+  if( length(catTerm$n.max) == 1 )
+    if( catTerm$n.max < nrow(params) )
+      catTerm$term <- c(catTerm$term, "fixed")
+
+  catTerm$n.max <- rep(catTerm$n.max, length.out = dim(resp)[1])
   
 ## e) p.term ##
 
@@ -995,6 +1011,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
     catStart.i  <- catStart
     catMiddle.i <- catMiddle
     catTerm.i   <- catTerm
+    catTerm.i$n.max <- catTerm.i$n.max[i]
   
 # Second, the particular simulee's initial theta value and classification bounds:
     catStart.i$init.theta     <- catStart$init.theta[i]
