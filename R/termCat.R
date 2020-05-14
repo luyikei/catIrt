@@ -17,7 +17,7 @@ function(params, resp, mod,
                                          categ    = c(0, 1, 2),
                                          delta    = .1,
                                          alpha    = .05, beta = .05,
-                                         conf.lev = .95)),
+                                         conf.lev = .95, indeterminate = FALSE)),
          ... )
 {
                                      
@@ -82,9 +82,28 @@ function(params, resp, mod,
 # --> figure out the location of the MLE -- that is the classification.
 
   if( any(catTerm$term == "class") & ( !is.na(dec$term) & (dec$term != "class") ) ){
+    if( catTerm$c.term$indeterminate ) {
 
-    categ <- catTerm$c.term$categ[sum(cat_theta > catTerm$c.term$bounds) + 1]
-        
+      bounds <- c(catTerm$c.term$bounds[1] - catTerm$c.term$delta,
+                 catTerm$c.term$bounds[1] + catTerm$c.term$delta)
+
+      cat_int <- sum(cat_theta > bounds) + 1
+
+      if (cat_int == 1){
+        categ <- catTerm$c.term$categ[1]
+      } else if (cat_int == 2){
+        categ <- "ID"
+      } else if (cat_int == 3){
+        categ <- catTerm$c.term$categ[2]
+      }
+
+      print(paste(cat_theta, bounds, categ))
+
+    } else{
+
+      categ <- catTerm$c.term$categ[sum(cat_theta > catTerm$c.term$bounds) + 1]
+
+    }
   } # END if STATEMENT
   
 

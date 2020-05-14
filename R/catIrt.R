@@ -36,7 +36,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
                                                     categ    = c(0, 1, 2),
                                                     delta    = .1,
                                                     alpha    = .05, beta = .05,
-                                                    conf.lev = .95)),
+                                                    conf.lev = .95, indeterminate = FALSE)),
                     ddist     = dnorm,
                     progress  = TRUE, ... )                                  
 {
