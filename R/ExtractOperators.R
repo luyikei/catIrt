@@ -44,7 +44,7 @@ sel.prm <- function(p, u, N, J, K){
 	
 	if(N == 1){
 	  lik <- sel(p, drop(u), J)
-	} else if( is.null( dim(u) ) & (J > 1) ){
+	} else if( is.null( dim(u) ) ){
 	  p   <- split.data.frame(p, rep(1:N, each = K))
 	  lik <- do.call(rbind, lapply(p, sel, u = u, J = J))
 	} else{
