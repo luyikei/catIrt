@@ -936,6 +936,9 @@ catIrt <- function( params, mod = c("brm", "grm"),
 
   } # END if STATEMENT
 
+## g7) c.term --> indeterminate ##
+  if( any(catTerm$term == "class") & is.null(catTerm$c.term$indeterminate) )
+    catTerm$c.term$indeterminate <- FALSE
 
 ######################## END ARGUMENT CHECK SECTION #######################
 ###########################################################################

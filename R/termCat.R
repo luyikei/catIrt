@@ -82,7 +82,7 @@ function(params, resp, mod,
 # --> figure out the location of the MLE -- that is the classification.
 
   if( any(catTerm$term == "class") & ( !is.na(dec$term) & (dec$term != "class") ) ){
-    if( catTerm$c.term$indeterminate ) {
+    if( !is.null(catTerm$c.term$indeterminate) & catTerm$c.term$indeterminate ) {
 
       categ <- "ID"
 
