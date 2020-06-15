@@ -67,7 +67,7 @@ SEXP pgrm( SEXP theta, SEXP params )    /* the person and item parameters */
       for( k = 0; k < n_cat - 1; k++ ){
 
 /* Note (IMPORTANT) - it fills in by COLUMNS, just like the default in R: */
-        p_exp = exp( -ppar[ 0 * n_it + j ] * ( ptheta[ i ] - ppar[ 1 * n_it + k * n_it + j ] ) );
+        p_exp = exp( -ppar[ 0 * n_it + j ] * ptheta[ i ] + ppar[ 1 * n_it + k * n_it + j ] );
         p     = 1 / ( 1 + p_exp );
 
         pP[ j * n_ppl * n_cat + i * n_cat + k + 1 ] = p;
@@ -139,7 +139,7 @@ SEXP pder1grm( SEXP theta, SEXP params )    /* the person and item parameters */
       for( k = 0; k < n_cat - 1; k++ ){
 
 /* Note (IMPORTANT) - it fills in by COLUMNS, just like the default in R: */
-        p_exp  = exp( -ppar[ 0 * n_it + j ] * ( ptheta[ i ] - ppar[ 1 * n_it + k * n_it + j ] ) );
+        p_exp  = exp( -ppar[ 0 * n_it + j ] * ptheta[ i ] + ppar[ 1 * n_it + k * n_it + j ] );
         p      = 1 / ( 1 + p_exp );
         p_der1 = ppar[ 0 * n_it + j ] * p * ( 1 - p );
 
@@ -211,7 +211,7 @@ SEXP pder2grm( SEXP theta, SEXP params )    /* the person and item parameters */
       for( k = 0; k < n_cat - 1; k++ ){
 
 /* Note (IMPORTANT) - it fills in by COLUMNS, just like the default in R: */
-        p_exp  = exp( ppar[ 0 * n_it + j ] * ( ptheta[ i ] - ppar[ 1 * n_it + k * n_it + j ] ) );
+        p_exp  = exp( ppar[ 0 * n_it + j ] * ptheta[ i ] - ppar[ 1 * n_it + k * n_it + j ] );
         p      = p_exp / ( 1 + p_exp );
         p_der1 = ppar[ 0 * n_it + j ] * p * ( 1 - p );
         p_der2 = ppar[ 0 * n_it + j ] * ( 1 - p_exp ) * ( 1 - p ) * p_der1;
