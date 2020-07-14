@@ -2,7 +2,7 @@ startCat <-
 function( params, resp, mod,
           it_flags = it_flags,
           catStart = list( n.start = 5, init.theta = 0,
-                           select = c("UW-FI", "LW-FI", "PW-FI",
+                           select = c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI",
                                       "FP-KL", "VP-KL", "FI-KL", "VI-KL",
                                       "random"),
                            at = c("theta", "bounds"), delta = .1,
@@ -45,7 +45,8 @@ function( params, resp, mod,
                              select = catStart$select, at = catStart$at,
                              bounds = catTerm$c.term$bounds, delta = catStart$delta,
                              range  = catStart$range, it.range = catStart$it.range,
-                             ddist = ddist, ... )$params[ , 1]
+                             ddist = ddist, phase1.params = catStart$phase1.params[!it_flags, -ncol(catMiddle$phase1.params)],
+                             phase1.theta = catMiddle$phase1.theta,... )$params[ , 1]
                              
                              
 # Pick the particular item (using a trick in case we only have one left):

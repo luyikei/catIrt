@@ -1,13 +1,14 @@
 itChoose <- function( left_par, mod = c("brm", "grm"),
                       numb = 1, n.select = 1,
                       cat_par = NULL, cat_resp = NULL, cat_theta = NULL,
-                      select = c("UW-FI", "LW-FI", "PW-FI",
+                      select = c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI",
                                  "FP-KL", "VP-KL", "FI-KL", "VI-KL",
                                  "random"),
                       at = c("theta", "bounds"),
                       range = c(-6, 6), it.range = NULL,
                       delta  = NULL, bounds = NULL,
-                      ddist  = dnorm, quad = 33, ... ){                  	
+                      ddist  = dnorm, quad = 33, phase1.params = NULL,
+                      phase1.theta = NULL, ... ){
 
 # Note: "at" will be either "theta" or "bounds" depending if the user wants
 #        to pick maximum information at "theta" or at one of the classification
@@ -105,7 +106,10 @@ itChoose <- function( left_par, mod = c("brm", "grm"),
   	    ( ( select %in% c("LW-FI", "PW-FI") ) & ( any( is.na(cat_resp) ) | ( length(cat_resp) == 0 ) ) ) } ){
   
     info <- FI(params = left_par[ , -1], theta = theta, type = "expected")$item
-    
+  } else if ( select == "UW-FI-Modified" ){
+    info <- FI(params = left_par[ , -1], theta = theta, type = "expected")$item
+    p <- p.brm(phase1.theta, phase1.params)
+    info <- (1 - p) * info
   } else if( select == "LW-FI" ){
   
     info <- WFI( left_par = left_par[ , -1], mod = mod,

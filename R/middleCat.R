@@ -4,7 +4,7 @@ function( params, resp, mod,
           cat_par, cat_it, cat_resp, cat_theta,
           cat_info, cat_sem,
           catStart,
-          catMiddle = list( select = c("UW-FI", "LW-FI", "PW-FI",
+          catMiddle = list( select = c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI",
                                        "FP-KL", "VP-KL", "FI-KL", "VI-KL",
                                        "random"),
                             at = c("theta", "bounds"),
@@ -52,7 +52,8 @@ function( params, resp, mod,
                              select = catMiddle$select, at = catMiddle$at,
                              bounds = catTerm$c.term$bounds, delta = catMiddle$delta,
                              range  = catMiddle$range, it.range = catMiddle$it.range,
-                             ddist = ddist, ... )$params[ , 1]
+                             ddist = ddist, phase1.params = catMiddle$phase1.params[!it_flags, -ncol(catMiddle$phase1.params)],
+                             phase1.theta = catMiddle$phase1.theta, ... )$params[ , 1]
                              
 # Pick the particular item (using a trick in case we only have one left):
       cat_it.i[j] <<- sample(c(it_select, it_select), size = 1)

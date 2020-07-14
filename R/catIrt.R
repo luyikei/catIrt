@@ -5,7 +5,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
                     it        = NULL,
                     theta     = NULL,
                     catStart  = list( n.start = 5, init.theta = 0,
-                                      select = c("UW-FI", "LW-FI", "PW-FI",
+                                      select = c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI",
                                                  "FP-KL", "VP-KL", "FI-KL", "VI-KL",
                                                  "random"),
                                       at = c("theta", "bounds"),
@@ -15,7 +15,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
                                                 "WLE", "BME", "EAP"),
                                       range = c(-1, 1),
                                       step.size = 3, leave.after.MLE = FALSE ),
-                    catMiddle = list( select = c("UW-FI", "LW-FI", "PW-FI",
+                    catMiddle = list( select = c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI",
                                                  "FP-KL", "VP-KL", "FI-KL", "VI-KL",
                                                  "random"),
                                       at = c("theta", "bounds"),
@@ -208,7 +208,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
 ## I. FOR THE CATSTART LIST ##
 	
 ## LIST OF OPTIONS ##
-  sel.opt <- c("UW-FI", "LW-FI", "PW-FI", "FP-KL", "VP-KL", "FI-KL", "VI-KL", "random")
+  sel.opt <- c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI", "FP-KL", "VP-KL", "FI-KL", "VI-KL", "random")
   at.opt  <- c("theta", "bounds")
   sco.opt <- c("fixed", "step", "random", "WLE", "BME", "EAP")
 
@@ -387,7 +387,7 @@ catIrt <- function( params, mod = c("brm", "grm"),
 ## II. FOR THE CATMIDDLE LIST ##
 
 ## LIST OF OPTIONS ##
-  sel.opt <- c("UW-FI", "LW-FI", "PW-FI", "FP-KL", "VP-KL", "FI-KL", "VI-KL", "random")
+  sel.opt <- c("UW-FI", "UW-FI-Modified", "LW-FI", "PW-FI", "FP-KL", "VP-KL", "FI-KL", "VI-KL", "random")
   at.opt   <- c("theta", "bounds")
   sco.opt  <- c("MLE", "WLE", "BME", "EAP")
 
@@ -1012,7 +1012,9 @@ catIrt <- function( params, mod = c("brm", "grm"),
     resp.i      <- resp[i, ]
     
     catStart.i  <- catStart
+    catStart.i$phase1.theta <- catStart.i$phase1.theta[i]
     catMiddle.i <- catMiddle
+    catMiddle.i$phase1.theta <- catMiddle.i$phase1.theta[i]
     catTerm.i   <- catTerm
     catTerm.i$n.max <- catTerm.i$n.max[i]
   
